@@ -101,7 +101,7 @@ tenderlove's nokogiri and csspool
 
 == INSTALL:
 
-sudo gem install inline-style
+sudo gem install inline-style --source http://gemcutter.org
 
 == LICENSE:
 
