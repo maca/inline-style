@@ -101,7 +101,7 @@ tenderlove's nokogiri and csspool
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+sudo gem install inline-style
 
 == LICENSE:
 
