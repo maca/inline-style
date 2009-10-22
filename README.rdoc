@@ -1,0 +1,129 @@
+= inline-style
+
+* http://github.com/maca/inline-style
+
+== DESCRIPTION:
+
+Simple utility for "inlining" all CSS in the style attribute for the html tags. Useful for html emails that won't
+correctly render stylesheets in some clients such as gmail.
+
+* Includes a Rack middleware for using with Rails, Sinatra, etc...
+* It takes into account selector specificity.
+
+== USAGE
+    require 'inline-style'
+
+    html  = File.read("#{ dir }/index.html")
+    puts InlineStyle.process(html, "#{ dir }/styles")
+        
+index.html contains:
+    
+    <style type="text/css" media="screen">
+    * {
+      font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+      margin: 4px 3px 2px 1px;
+      padding: 0;
+    }
+
+    #list {
+      margin: 10;
+    }
+
+    #list li {
+      font-family: Arial;
+    }
+
+    .element {
+      padding: 10;
+    }
+
+    .odd {
+      background-color: black;
+    }
+
+    .pair {
+      background-color: red;
+    }
+
+    </style>
+    
+    
+    <ul id='number' class='listing inlined' style='background-color: yellow'>
+      <li class='list-element odd'>
+        <span>1</span>
+      </li>
+      <li class='list-element pair'>
+        <span>2</span>
+      </li>
+      <li class='list-element odd'>
+        <span>3</span>
+      </li>
+      <li class='list-element pair'>
+        <span>4</span>
+      </li>
+    </ul>
+
+Will output:
+        
+    <ul id="number" class="listing inlined" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: yellow;'>
+      <li class="list-element odd" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: black;'>
+        <span style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;'>1</span>
+      </li>
+      <li class="list-element pair" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: red;'>
+        <span style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;'>2</span>
+      </li>
+      <li class="list-element odd" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: black;'>
+        <span style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;'>3</span>
+      </li>
+      <li class="list-element pair" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: red;'>
+        <span style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;'>4</span>
+      </li>
+    </ul>
+    
+As rack middleware:
+
+    # Process all routes:
+    use InlineStyle::Rack::Middleware
+    
+    # Restrict processing to single route:
+    use InlineStyle::Rack::Middleware, :paths => %r(/mails/.*)
+    
+    # Restrict processing to some routes:
+    use InlineStyle::Rack::Middleware, :paths => [%r(/mails/.*), "/somepath"]
+    
+== ISSUES:
+  
+* Doesn't work with relative stylesheet links
+
+== REQUIREMENTS:
+
+tenderlove's nokogiri and csspool
+
+== INSTALL:
+
+* FIX (sudo gem install, anything else)
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2009 Macario Ortega
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
