@@ -94,6 +94,7 @@ As rack middleware:
 == ISSUES:
   
 * Doesn't work with relative stylesheet links
+* It strips any numeric character (Rails may add) at the end of the stylesheet file name, anyway stylesheets should end with .css extension
 
 == REQUIREMENTS:
 

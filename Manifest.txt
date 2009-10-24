@@ -3,10 +3,8 @@ Manifest.txt
 README.rdoc
 Rakefile
 example.rb
-inline-style.gemspec
 lib/inline-style.rb
 lib/inline-style/rack/middleware.rb
-rack-inline-styles.gemspec
 spec/as_middleware_spec.rb
 spec/css_inlining_spec.rb
 spec/fixtures/style.css

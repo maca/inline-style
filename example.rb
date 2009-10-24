@@ -1,6 +1,5 @@
 require 'rubygems'
-require "#{ dir = File.dirname(__FILE__) }/lib/inline-style"
-require 'benchmark'
+require "#{ File.dirname(__FILE__) }/lib/inline-style"
 
-html  = File.read("#{ dir }/spec/fixtures/with-style-tag.html")
-puts InlineStyle.process(html, "#{ dir }/spec/fixtures")
+html  = File.read("#{ dir = File.dirname(__FILE__) + '/spec/fixtures' }/boletin.html")
+puts InlineStyle.process(html, dir)
