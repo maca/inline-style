@@ -7,7 +7,7 @@ require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
 module InlineStyle
   VERSION = '0.0.1'
   
-  def self.process html, document_root
+  def self.process html, document_root = ''
     nokogiri_doc_given = Nokogiri::HTML::Document === html
         
     html  = nokogiri_doc_given ? html : Nokogiri.HTML(html)
@@ -47,7 +47,7 @@ module InlineStyle
       next unless e['rel'] == 'stylesheet'
       e.remove
       next open(e['href']).read if %r{^https?://} === e['href']
-      File.read File.join(document_root, e['href'])
+      File.read File.join(document_root, e['href']) rescue ''
     }.join("\n")
   end
   
