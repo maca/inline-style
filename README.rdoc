@@ -1,11 +1,13 @@
 = inline-style
 
-* http://github.com/maca/inline-style
+http://github.com/maca/inline-style
 
 == DESCRIPTION:
 
-Simple utility for "inlining" all CSS in the style attribute for the html tags. Useful for html emails that won't
-correctly render stylesheets in some clients such as gmail.
+Will take all css in a page (either from linked stylesheet or from style tag) and will embed it in the style attribute for 
+each refered element taking selector specificity and declarator order.
+
+Useful for html email: some clients (gmail, et all) won't render non inline styles.
 
 * Includes a Rack middleware for using with Rails, Sinatra, etc...
 * It takes into account selector specificity.
@@ -14,7 +16,7 @@ correctly render stylesheets in some clients such as gmail.
     require 'inline-style'
 
     html  = File.read("#{ dir }/index.html")
-    puts InlineStyle.process(html, "#{ dir }/styles")
+    puts InlineStyle.process(html, :stylesheets_paths => "#{ dir }/styles")
         
 index.html contains:
     
@@ -63,7 +65,7 @@ index.html contains:
       </li>
     </ul>
 
-Will output:
+Will become:
         
     <ul id="number" class="listing inlined" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: yellow;'>
       <li class="list-element odd" style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;background-color: black;'>
@@ -80,7 +82,7 @@ Will output:
       </li>
     </ul>
     
-As rack middleware:
+== RACK MIDDLEWARE:
 
     # Process all routes:
     use InlineStyle::Rack::Middleware
@@ -92,8 +94,10 @@ As rack middleware:
     use InlineStyle::Rack::Middleware, :paths => [%r(/mails/.*), "/somepath"]
     
 == ISSUES:
-  
-* Doesn't work with relative stylesheet links
+
+* It supports pseudo classes according to W3C specification for style in style attribute: http://www.w3.org/TR/css-style-attr, although browsers
+doesn't seems to.
+* It strips any numeric character (Rails may add) at the end of the stylesheet file name, anyway stylesheets should end with .css extension
 
 == REQUIREMENTS:
 
@@ -101,7 +105,7 @@ tenderlove's nokogiri and csspool
 
 == INSTALL:
 
-sudo gem install inline-style --source http://gemcutter.org
+    sudo gem install inline-style --source http://gemcutter.org
 
 == LICENSE:
 

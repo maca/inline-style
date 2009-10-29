@@ -8,7 +8,7 @@ $hoe = Hoe.new('inline-style', InlineStyle::VERSION) do |p|
   p.rubyforge_name       = p.name
   p.extra_deps         = [
     ['nokogiri','>= 1.3.3'],
-    ['csspool', '>= 2.0.0']  
+    ['maca-fork-csspool', '>= 2.0.2']  
   ]
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]

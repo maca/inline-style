@@ -15,7 +15,7 @@ module HaveInlineStyleMatcher
 
     def matches? html
       @html = html
-      @html.css(@selector).inject(true){ |bool, e| bool and !e['style'].nil? }
+      !@html.css(@selector).empty? and @html.css(@selector).inject(true){ |bool, e| bool and !e['style'].nil? }
     end
 
     def failure_message
