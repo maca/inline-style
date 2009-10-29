@@ -21,7 +21,7 @@ module InlineStyle
       #
       def initialize app, opts = {}
         @app   = app
-        @opts  = {:document_root => env['DOCUMENT_ROOT']}.merge(opts)
+        @opts  = opts
         @paths = /^(?:#{ [*opts[:paths]].join('|') })/
       end
 
@@ -33,7 +33,7 @@ module InlineStyle
         response = ::Rack::Response.new '', status, headers
         body     = content.respond_to?(:body) ? content.body : content
         
-        response.write InlineStyle.process(body, @opts)
+        response.write InlineStyle.process(body, {:document_root => env['DOCUMENT_ROOT']}.merge(@opts))
         response.finish
       end
     end

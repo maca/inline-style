@@ -1,11 +1,13 @@
 require 'nokogiri'
 require 'open-uri'
-require '/Users/sistemasinteractivos/Gems/Web/csspool/lib/csspool'
+
+gem 'maca-fork-csspool'
+require 'csspool'
 
 require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
 
 module InlineStyle
-  VERSION = '0.4'  
+  VERSION = '0.4.2'  
 
   #   Options:
   #     +:stylesheets_path+
