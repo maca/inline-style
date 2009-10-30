@@ -3,8 +3,8 @@ module InlineStyle
     class Middleware
       #
       #   Options:
-      #     +document_root+
-      #       File system path for app's public directory where the stylesheets are to be found, defaults to
+      #     +stylesheets_path+
+      #       Stylesheets root path or app's public directory where the stylesheets are to be found, defaults to
       #       env['DOCUMENT_ROOT']
       #     
       #     +paths+
@@ -33,7 +33,7 @@ module InlineStyle
         response = ::Rack::Response.new '', status, headers
         body     = content.respond_to?(:body) ? content.body : content
         
-        response.write InlineStyle.process(body, {:document_root => env['DOCUMENT_ROOT']}.merge(@opts))
+        response.write InlineStyle.process(body, {:stylesheets_path => env['DOCUMENT_ROOT']}.merge(@opts))
         response.finish
       end
     end

@@ -19,6 +19,10 @@ describe InlineStyle::Rack::Middleware do
     get_response('/', @html, :stylesheets_path => FIXTURES).should have_inline_style_for('#A')
   end
   
+  it "should use external css" do
+    get_response('/', Nokogiri.HTML(@html), :stylesheets_path => FIXTURES).css('#izq').first['style'].should =~ /margin: 30.0px/
+  end
+  
   describe 'Path inclusion' do
     
     it "should inline style for string path" do
