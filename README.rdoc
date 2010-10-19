@@ -97,7 +97,6 @@ Will become:
 
 * It supports pseudo classes according to W3C specification for style in style attribute: http://www.w3.org/TR/css-style-attr, although browsers
 doesn't seems to.
-* It strips any numeric character (Rails may add) at the end of the stylesheet file name, anyway stylesheets should end with .css extension
 
 == REQUIREMENTS:
 
