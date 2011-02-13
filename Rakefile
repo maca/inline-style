@@ -14,7 +14,8 @@ $hoe = Hoe.spec('inline-style') do |p|
     ['maca-fork-csspool', '>= 2.0.2']
   ]
   p.extra_dev_deps = [
-    ['newgem', ">= #{::Newgem::VERSION}"]
+    ['newgem', ">= #{::Newgem::VERSION}"],
+    ['mail', '>= 0'],
   ]
   
   p.clean_globs |= %w[**/.DS_Store tmp *.log]

@@ -10,6 +10,8 @@ each refered element taking selector specificity and declarator order.
 Useful for html email: some clients (gmail, et all) won't render non inline styles.
 
 * Includes a Rack middleware for using with Rails, Sinatra, etc...
+* Includes a interceptor for the mail gem which allows automatic
+  inline processing for both mail as well as ActionMailer.
 * It takes into account selector specificity.
 
 == USAGE
@@ -92,6 +94,18 @@ Will become:
     
     # Restrict processing to some routes:
     use InlineStyle::Rack::Middleware, :paths => [%r(/mails/.*), "/somepath"]
+
+== MAIL INTERCEPTOR
+
+If using the mail library the following code will work:
+
+   Mail.register_interceptor \
+     InlineStyle::Mail::Interceptor.new(:stylesheets_path => 'public')
+
+If using ActionMailer (which wraps mail):
+
+   ActionMailer::Base.register_interceptor \
+     InlineStyle::Mail::Interceptor.new(:stylesheets_path => 'public')
     
 == ISSUES:
 

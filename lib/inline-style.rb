@@ -5,6 +5,7 @@ gem 'maca-fork-csspool'
 require 'csspool'
 
 require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
+require "#{ File.dirname( __FILE__ ) }/inline-style/mail/interceptor"
 
 module InlineStyle
   VERSION = '0.4.2'  
