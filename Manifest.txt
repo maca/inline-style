@@ -1,6 +1,6 @@
 History.txt
 Manifest.txt
-README.rdoc
+README.txt
 Rakefile
 example.rb
 lib/inline-style.rb
