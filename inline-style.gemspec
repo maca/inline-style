@@ -18,7 +18,7 @@ Useful for html email: some clients (gmail, et all) won't render non inline styl
 * It takes into account selector specificity.}
   s.email = ["macarui@gmail.com"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "example.rb", "lib/inline-style.rb", "lib/inline-style/rack/middleware.rb", "spec/as_middleware_spec.rb", "spec/css_inlining_spec.rb", "spec/fixtures/all.css", "spec/fixtures/boletin.html", "spec/fixtures/box-model.html", "spec/fixtures/inline.html", "spec/fixtures/none.css", "spec/fixtures/print.css", "spec/fixtures/selectors.html", "spec/fixtures/style.css", "spec/spec_helper.rb", ".gemtest"]
+  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "example.rb", "lib/inline-style.rb", "lib/inline-style/rack/middleware.rb", "spec/as_middleware_spec.rb", "spec/css_inlining_spec.rb", "spec/fixtures/all.css", "spec/fixtures/boletin.html", "spec/fixtures/box-model.html", "spec/fixtures/inline.html", "spec/fixtures/none.css", "spec/fixtures/print.css", "spec/fixtures/selectors.html", "spec/fixtures/style.css", "spec/spec_helper.rb"]
   s.homepage = %q{http://github.com/maca/inline-style}
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
