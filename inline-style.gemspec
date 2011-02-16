@@ -2,21 +2,23 @@
 
 Gem::Specification.new do |s|
   s.name = %q{inline-style}
-  s.version = "0.4.2.20110212194827"
+  s.version = "0.4.2.20110215202625"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Macario Ortega"]
-  s.date = %q{2011-02-12}
+  s.date = %q{2011-02-15}
   s.description = %q{Will take all css in a page (either from linked stylesheet or from style tag) and will embed it in the style attribute for 
 each refered element taking selector specificity and declarator order.
 
 Useful for html email: some clients (gmail, et all) won't render non inline styles.
 
 * Includes a Rack middleware for using with Rails, Sinatra, etc...
+* Includes a interceptor for the mail gem which allows automatic
+  inline processing for both mail as well as ActionMailer.
 * It takes into account selector specificity.}
   s.email = ["macarui@gmail.com"]
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "example.rb", "lib/inline-style.rb", "lib/inline-style/rack/middleware.rb", "spec/as_middleware_spec.rb", "spec/css_inlining_spec.rb", "spec/fixtures/all.css", "spec/fixtures/boletin.html", "spec/fixtures/box-model.html", "spec/fixtures/inline.html", "spec/fixtures/none.css", "spec/fixtures/print.css", "spec/fixtures/selectors.html", "spec/fixtures/style.css", "spec/spec_helper.rb", ".gemtest"]
+  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
+  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "example.rb", "lib/inline-style.rb", "lib/inline-style/rack/middleware.rb", "spec/as_middleware_spec.rb", "spec/css_inlining_spec.rb", "spec/fixtures/all.css", "spec/fixtures/boletin.html", "spec/fixtures/box-model.html", "spec/fixtures/inline.html", "spec/fixtures/none.css", "spec/fixtures/print.css", "spec/fixtures/selectors.html", "spec/fixtures/style.css", "spec/spec_helper.rb", ".gemtest"]
   s.homepage = %q{http://github.com/maca/inline-style}
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
