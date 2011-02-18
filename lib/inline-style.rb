@@ -1,9 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 
-gem 'maca-fork-csspool'
-require 'csspool'
-
+require "#{ File.dirname( __FILE__ ) }/inline-style/css_parsers"
 require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
 require "#{ File.dirname( __FILE__ ) }/inline-style/mail/interceptor"
 
@@ -28,14 +26,14 @@ module InlineStyle
     css   = extract_css html, stylesheets_path
     nodes = {}
 
-    css.rule_sets.each do |rule_set|
-      rule_set.selectors.each do |selector|
-        css_selector = selector.to_s
+    css.each_rule_set do |rule_set|
+      rule_set.each_selector do |css_selector, declarations, specificity|
+        orig_selector = css_selector.dup
         css_selector = "#{ 'body ' unless /^body/ === css_selector }#{ css_selector.gsub /:.*/, '' }"
         
         html.css(css_selector).each do |node|
           nodes[node] ||= []
-          nodes[node].push selector
+          nodes[node].push [css_selector, declarations, specificity, orig_selector]
           
           next unless node['style']
           
@@ -43,26 +41,29 @@ module InlineStyle
           path << "##{ node['id'] }" if node['id']
           path << ".#{ node['class'].scan(/\S+/).join('.') }" if node['class']
           
-          CSSPool.CSS("#{ path }{#{ node['style'] }}").rule_sets.each{ |rule| nodes[node].push *rule.selectors }
+          InlineStyle::CssParsers.parser.new("#{ path }{#{ node['style'] }}").each_rule_sets do |rule|
+            rule.each_selectors do |css_selector, declarations, specificity|
+              nodes[node].push [css_selector, declarations, specificity]
+            end
+          end
         end
       end
     end
 
     nodes.each_pair do |node, style|
-      style = style.sort_by{ |sel| "#{ sel.specificity }%03d" % style.index(sel) }
-      sets  = style.partition{ |sel| not /:\w+/ === sel.to_s  }
+      style = style.sort_by{ |(sel, dec, spe)| "#{ spe }%03d" % style.index([sel, dec, spe]) }
+      sets  = style.partition{ |(sel, dec, spe, orig)| not /:\w+/ === orig  }
       
       sets.pop if not pseudo or sets.last.empty?
       
       node['style'] = sets.collect do |selectors|
         index = sets.index selectors
         
-        set   = selectors.map do |selector|
-          declarations = selector.declarations.map{ |d| d.to_css.squeeze(' ') }.join
-          index == 0 ? declarations : "\n#{ selector.to_s.gsub /\w(?=:)/, '' } {#{ declarations }}"
+        set   = selectors.map do |(css_selector, declarations, specificity, orig_selector)|
+          index == 0 ? declarations : "\n#{ orig_selector.gsub /\w(?=:)/, '' } {#{ declarations }}"
         end
                      
-        index == 0 && sets.size > 1 ? "{#{ set }}" : set.join
+        index == 0 && sets.size > 1 ? "{#{ set }}" : set.collect(&:strip).join(' ')
       end.join.strip
     end
     
@@ -71,7 +72,7 @@ module InlineStyle
   
   # Returns CSSPool::Document
   def self.extract_css html, stylesheets_path = ''
-    CSSPool.CSS html.css('style, link').collect { |e|
+    InlineStyle::CssParsers.parser.new html.css('style, link').collect { |e|
       next unless e['media'].nil?  or ['screen', 'all'].include? e['media']
       next(e.remove and e.content) if e.name == 'style'
       next unless e['rel'] == 'stylesheet'
