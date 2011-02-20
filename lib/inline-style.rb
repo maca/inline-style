@@ -8,8 +8,6 @@ require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
 require "#{ File.dirname( __FILE__ ) }/inline-style/mail/interceptor"
 
 module InlineStyle
-  VERSION = '0.4.2'  
-
   #   Options:
   #     +:stylesheets_path+
   #       Stylesheets root path, can also be a URL
@@ -72,7 +70,7 @@ module InlineStyle
   # Returns CSSPool::Document
   def self.extract_css html, stylesheets_path = ''
     CSSPool.CSS html.css('style, link').collect { |e|
-      next unless e['media'].nil?  or ['screen', 'all'].include? e['media']
+      next unless e['media'].nil? || ['screen', 'all'].include?(e['media'])
       next(e.remove and e.content) if e.name == 'style'
       next unless e['rel'] == 'stylesheet'
       e.remove

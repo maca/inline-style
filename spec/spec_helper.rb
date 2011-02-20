@@ -1,11 +1,10 @@
 require 'rubygems'
-require 'spec'
+require 'rspec'
 require "#{ DIR = File.dirname(__FILE__) }/../lib/inline-style"
 require 'rack'
 require 'rack/mock'
 
 FIXTURES = "#{ DIR }/fixtures"
-
 
 module HaveInlineStyleMatcher
   class HaveInlineStyle
@@ -32,4 +31,4 @@ module HaveInlineStyleMatcher
   end
 end
 
-Spec::Runner.configure { |config| config.include HaveInlineStyleMatcher }
+RSpec.configure { |config| config.include HaveInlineStyleMatcher }

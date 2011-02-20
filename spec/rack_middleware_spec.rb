@@ -24,7 +24,6 @@ describe InlineStyle::Rack::Middleware do
   end
   
   describe 'Path inclusion' do
-    
     it "should inline style for string path" do
       paths = "/some/path"
       get_response('/some/path', @html, :stylesheets_path => FIXTURES, :paths => paths).should have_inline_style_for('#A')
