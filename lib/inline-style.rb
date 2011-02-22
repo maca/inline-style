@@ -40,10 +40,10 @@ module InlineStyle
           path = node.css_path
           path << "##{ node['id'] }" if node['id']
           path << ".#{ node['class'].scan(/\S+/).join('.') }" if node['class']
-          
-          InlineStyle::CssParsers.parser.new("#{ path }{#{ node['style'] }}").each_rule_sets do |rule|
-            rule.each_selectors do |css_selector, declarations, specificity|
-              nodes[node].push [css_selector, declarations, specificity]
+
+          InlineStyle::CssParsers.parser.new("#{ path }{#{ node['style'] }}").each_rule_set do |rule|
+            rule.each_selector do |css_selector_inner, declarations_inner, specificity_inner|
+              nodes[node].push [css_selector_inner, declarations_inner, specificity_inner, css_selector_inner]
             end
           end
         end
@@ -51,7 +51,7 @@ module InlineStyle
     end
 
     nodes.each_pair do |node, style|
-      style = style.sort_by{ |(sel, dec, spe)| "#{ spe }%03d" % style.index([sel, dec, spe]) }
+      style = style.sort_by{ |(sel, dec, spe, orig)| "#{ spe }%03d" % style.index([sel, dec, spe, orig]) }
       sets  = style.partition{ |(sel, dec, spe, orig)| not /:\w+/ === orig  }
       
       sets.pop if not pseudo or sets.last.empty?
