@@ -12,7 +12,7 @@ module InlineStyle
 
     def self.parser
       return @parser if @parser
-      @parser_name = ENV['CSS_PARSER'] || :csspool unless @parser_name
+      @parser_name = ENV['CSS_PARSER'] || :css_parser unless @parser_name
       require "inline-style/css_parsers/#{@parser_name}"
       @parser = const_get(@parser_name.to_s.gsub(/(?:^|_)(.)/) { $1.upcase })
     end

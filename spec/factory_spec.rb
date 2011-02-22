@@ -12,9 +12,9 @@ describe InlineStyle::CssParsers do
     InlineStyle::CssParsers.parser = nil # Clear out any cached value
   end
 
-  it 'should load csspool by default' do
+  it 'should load css_parser by default' do
     InlineStyle::CssParsers.parser.name.
-    should == 'InlineStyle::CssParsers::Csspool'
+    should == 'InlineStyle::CssParsers::CssParser'
   end
 
   it "should obey ENV['CSS_PARSER']" do
