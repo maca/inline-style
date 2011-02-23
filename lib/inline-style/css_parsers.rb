@@ -1,7 +1,7 @@
 module InlineStyle
 
   # A factory for returning a configured CSS parser. Defaults to
-  # :csspool if not specified. Will also use ENV['CSS_PARSER'].
+  # :css_parser if not specified. Will also use ENV['CSS_PARSER'].
   module CssParsers
 
     # Allows you to specify the CSS parser to use.
