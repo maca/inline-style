@@ -1,49 +1,30 @@
 # -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "inline-style/version"
 
 Gem::Specification.new do |s|
-  s.name = %q{inline-style}
-  s.version = "0.4.2.20110217201008"
+  s.name        = "inline-style"
+  s.version     = Inline::Style::VERSION
+  s.platform    = Gem::Platform::RUBY
+  s.authors     = ["Macario Ortega", "Eric Anderson"]
+  s.email       = ["macarui@gmail.com"]
+  s.homepage    = ""
+  s.summary     = %q{Inlines CSS for html email delivery}
+  s.description = %q{Inlines CSS for html email delivery}
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Macario Ortega"]
-  s.date = %q{2011-02-17}
-  s.description = %q{Will take all css in a page (either from linked stylesheet or from style tag) and will embed it in the style attribute for 
-each refered element taking selector specificity and declarator order.
+  # s.rubyforge_project = "inline-style"
 
-Useful for html email: some clients (gmail, et all) won't render non inline styles.
-
-* Includes a Rack middleware for using with Rails, Sinatra, etc...
-* Includes a interceptor for the mail gem which allows automatic
-  inline processing for both mail as well as ActionMailer.
-* It takes into account selector specificity.}
-  s.email = ["macarui@gmail.com"]
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "example.rb", "inline-style.gemspec", "lib/inline-style.rb", "lib/inline-style/css_parsers.rb", "lib/inline-style/css_parsers/css_parser.rb", "lib/inline-style/css_parsers/csspool.rb", "lib/inline-style/mail/interceptor.rb", "lib/inline-style/rack/middleware.rb", "spec/as_middleware_spec.rb", "spec/css_inlining_spec.rb", "spec/css_parsers_spec.rb", "spec/factory_spec.rb", "spec/fixtures/all.css", "spec/fixtures/boletin.html", "spec/fixtures/box-model.html", "spec/fixtures/inline.html", "spec/fixtures/none.css", "spec/fixtures/print.css", "spec/fixtures/selectors.html", "spec/fixtures/style.css", "spec/interceptor_spec.rb", "spec/spec_helper.rb"]
-  s.homepage = %q{http://github.com/maca/inline-style}
-  s.rdoc_options = ["--main", "README.txt"]
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{inline-style}
-  s.rubygems_version = %q{1.4.2}
-  s.summary = %q{Will take all css in a page (either from linked stylesheet or from style tag) and will embed it in the style attribute for  each refered element taking selector specificity and declarator order}
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rack'
+  s.add_development_dependency 'rspec-core'
+  s.add_development_dependency 'mail'
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<nokogiri>, [">= 1.3.3"])
-      s.add_development_dependency(%q<newgem>, [">= 1.5.3"])
-      s.add_development_dependency(%q<mail>, [">= 0"])
-      s.add_development_dependency(%q<hoe>, [">= 2.9.1"])
-    else
-      s.add_dependency(%q<nokogiri>, [">= 1.3.3"])
-      s.add_dependency(%q<newgem>, [">= 1.5.3"])
-      s.add_dependency(%q<mail>, [">= 0"])
-      s.add_dependency(%q<hoe>, [">= 2.9.1"])
-    end
-  else
-    s.add_dependency(%q<nokogiri>, [">= 1.3.3"])
-    s.add_dependency(%q<newgem>, [">= 1.5.3"])
-    s.add_dependency(%q<mail>, [">= 0"])
-    s.add_dependency(%q<hoe>, [">= 2.9.1"])
-  end
+  s.add_dependency 'nokogiri'
+  s.add_dependency 'css_parser'
+  s.add_dependency 'maca-fork-csspool'
 end
