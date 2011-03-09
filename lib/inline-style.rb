@@ -28,7 +28,7 @@ class InlineStyle
     nodes = {}
 
     css.each_rule_set do |rule_set|
-      rule_set.each_selector do |selector|        
+      rule_set.each_selector do |selector|
         dom.css(selector.search).each do |node|
           nodes[node] ||= []
           nodes[node].push selector

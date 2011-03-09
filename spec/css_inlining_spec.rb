@@ -34,6 +34,10 @@ describe InlineStyle do
     processed.css('a').first['style'].should =~ /\{/
   end
 
+  it 'should process location-based pseudo classes' do
+    @processed.at_css('#izq')['style'].should =~ /padding: 1.0px;/
+  end
+
   it 'should apply to #A #B' do
     @processed.css('#logos #der').first['style'].should =~ /float: right;/
   end

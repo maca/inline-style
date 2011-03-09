@@ -4,9 +4,13 @@
 class InlineStyle::Selector < Struct.new :selector_text, :declarations, :specificity
 
   # A slightly adjusted version of the selector_text that should be
-  # used for finding nodes.
+  # used for finding nodes. Will remove the pseudo selector and prepend
+  # 'body '.
   def search
-    selector_text.gsub(/:.*/, '').tap {|s| s.insert(0, 'body ') unless s =~ /^body/}
+    selector_text.dup.tap do |s|
+      state_based_pseudo_selectors.each {|p| s.gsub! /:#{p}$/, ''}
+      s.insert(0, 'body ') unless s =~ /^body/
+    end
   end
 
   # For the most part is just declarations unless a pseudo selector.
@@ -21,7 +25,15 @@ class InlineStyle::Selector < Struct.new :selector_text, :declarations, :specifi
 
   # Is this selector using a pseudo class?
   def pseudo?
-    selector_text =~ /:\w+/ 
+    state_based_pseudo_selectors.any? {|p| selector_text.end_with? ":#{p}"} 
+  end
+
+  # A list of state based pseudo selectors (like hover) that should
+  # be handled based on the pseudo option. Unlike position-based
+  # pseudo selectors (like :first-child) which once resolved to the
+  # correct node effectively get inlined like a normal selector.
+  def state_based_pseudo_selectors
+    %w(link visited active hover focus target enabled disabled checked)
   end
 
 end
