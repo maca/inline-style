@@ -23,7 +23,7 @@ module InlineStyle::CssParsers
       def each_selector
         @ruleset.each_selector do |sel, dec, spe|
           normalize_for_test! dec
-          yield sel, dec, spe
+          yield InlineStyle::Selector.new(sel, dec, spe)
         end
       end
 

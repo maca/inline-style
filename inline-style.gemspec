@@ -4,7 +4,7 @@ require "inline-style/version"
 
 Gem::Specification.new do |s|
   s.name        = "inline-style"
-  s.version     = Inline::Style::VERSION
+  s.version     = InlineStyle::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Macario Ortega", "Eric Anderson"]
   s.email       = ["macarui@gmail.com"]

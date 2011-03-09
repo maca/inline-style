@@ -42,11 +42,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  css_parser
   inline-style!
-  maca-fork-csspool
   mail
-  nokogiri
   rack
   rspec
   rspec-core

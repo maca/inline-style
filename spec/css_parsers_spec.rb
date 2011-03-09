@@ -14,11 +14,11 @@ describe InlineStyle::CssParsers::CssParser do
 
     p.each_rule_set do |rs|
       rs_count += 1
-      rs.each_selector do |sel, dec, spe|
+      rs.each_selector do |sel|
         sel_count += 1
-        sel.should == selectors.shift
-        dec.should == decs.shift
-        spe.should == spes.shift
+        sel.selector_text.should == selectors.shift
+        sel.declarations.should == decs.shift
+        sel.specificity.should == spes.shift
       end
     end
 
@@ -40,11 +40,11 @@ describe InlineStyle::CssParsers::Csspool do
 
     p.each_rule_set do |rs|
       rs_count += 1
-      rs.each_selector do |sel, dec, spe|
+      rs.each_selector do |sel|
         sel_count += 1
-        sel.should == selectors.shift
-        dec.should == decs.shift
-        spe.should == spes.shift
+        sel.selector_text.should == selectors.shift
+        sel.declarations.should == decs.shift
+        sel.specificity.should == spes.shift
       end
     end
 

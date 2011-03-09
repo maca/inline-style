@@ -22,9 +22,9 @@ module InlineStyle::CssParsers
 
       def each_selector(&blk)
         @ruleset.selectors.each do |selector|
-          yield selector.to_s,
+          yield InlineStyle::Selector.new(selector.to_s,
             selector.declarations.map{ |d| d.to_s.squeeze(' ') }.join.strip,
-            selector.specificity.inject(0) {|t, s| t+s}
+            selector.specificity.inject(0) {|t, s| t+s})
         end
       end
 
