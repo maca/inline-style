@@ -28,12 +28,10 @@ module InlineStyle::Rack
       response = @app.call env
       return response unless @paths === env['PATH_INFO']
       
-      status, headers, content = response
-      response = ::Rack::Response.new '', status, headers
-      body     = content.respond_to?(:body) ? content.body : content
+      status, headers, body = response
       
-      response.write InlineStyle.process(body, {:stylesheets_path => env['DOCUMENT_ROOT']}.merge(@opts))
-      response.finish
+      body = InlineStyle.process(body.first, {:stylesheets_path => env['DOCUMENT_ROOT']}.merge(@opts))
+      [status, headers, [body]]
     end
   end
 end

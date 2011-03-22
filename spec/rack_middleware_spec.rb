@@ -6,7 +6,7 @@ describe InlineStyle::Rack::Middleware do
     content_type = opts.delete(:content_type) || 'text/html'
     app = Rack::Builder.new do
       use InlineStyle::Rack::Middleware, opts
-      run lambda { |env| env['DOCUMENT_ROOT'] = FIXTURES; [200, {'Content-Type' => content_type}, body ] }
+      run lambda { |env| env['DOCUMENT_ROOT'] = FIXTURES; [200, {'Content-Type' => content_type}, [body]] }
     end    
     Nokogiri.HTML Rack::MockRequest.new(app).get(path).body
   end
@@ -20,7 +20,7 @@ describe InlineStyle::Rack::Middleware do
   end
   
   it "should use external css" do
-    get_response('/', Nokogiri.HTML(@html), :stylesheets_path => FIXTURES).css('#izq').first['style'].should =~ /margin: 30.0px/
+    get_response('/', @html, :stylesheets_path => FIXTURES).css('#izq').first['style'].should =~ /margin: 30.0px/
   end
   
   describe 'Path inclusion' do
