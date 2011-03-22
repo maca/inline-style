@@ -2,9 +2,8 @@ require "#{ File.dirname __FILE__ }/spec_helper"
 
 describe InlineStyle do
   before do
-    @processed = InlineStyle.process Nokogiri.HTML(File.read("#{ FIXTURES }/boletin.html")), 
-      :pseudo => false,
-      :stylesheets_path => FIXTURES
+    processed  = InlineStyle.process File.read("#{ FIXTURES }/boletin.html"), :pseudo => false, :stylesheets_path => FIXTURES
+    @processed = Nokogiri.HTML(processed)
   end
 
   it "should extract from linked stylesheet" do
@@ -24,8 +23,8 @@ describe InlineStyle do
   end
 
   it "should not process pseudo classes" do
-    @processed.to_s.should_not =~ /:hover/
-    @processed.to_s.should_not =~ /\{/
+    @processed.should_not =~ /:hover/
+    @processed.should_not =~ /\{/
   end
   
   it "should should process pseudo classes" do
@@ -42,8 +41,6 @@ describe InlineStyle do
     @processed.css('#logos #der').first['style'].should =~ /float: right;/
   end
   
-  # it 'should order selectors by specificity'
-  # it 'should order selectors by specificity and defininition order'
   # it 'should overwrite rule with less specificity'
   # it 'should overwrite rule previously defined'
   # it 'should not overwrite rules defined inline'
@@ -69,8 +66,3 @@ describe InlineStyle do
     end
   end
 end
-
-
-
-
-

@@ -1,22 +1,26 @@
 require 'nokogiri'
 require 'open-uri'
 
-class InlineStyle
+$:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
-  #   Options:
-  #     +:stylesheets_path+
-  #       Stylesheets root path, can also be a URL
+require "inline-style/selector"
+require "inline-style/css_parsers"
+require "inline-style/rack/middleware"
+require "inline-style/mail/interceptor"
+
+class InlineStyle
+  # @param [String, Nokogiri::HTML::Document] html Html or Nokogiri html to be inlined
+  # @param [Hash] opts Processing options
   #
-  #     +pseudo+
+  # @option opts [String] :stylesheets_path (env['DOCUMENT_ROOT']) 
+  #       Stylesheets root path or app's public directory where the stylesheets are to be found
+  # @option opts [Boolean] :pseudo (false) 
   #       If set to true will inline style for pseudo classes according to the W3C specification:
   #       http://www.w3.org/TR/css-style-attr.
-  #       Defaults to false and should probably be left like that because at least Safari and Firefox don't seem to 
-  #       comply with the specification for pseudo class style in the style attribute.
+  #       Should probably be left as false because browsers don't seem to comply with the specification for pseudo class style in the style attribute.
   def self.process html, opts = {}
-    new(html, opts).send :process
+    new(html, opts).process
   end
-
-  private
 
   def initialize html, opts = {}
     @html             = html
@@ -50,7 +54,7 @@ class InlineStyle
 
     nodes.each_pair do |node, selectors|
       selectors = selectors.sort_by{ |sel| "#{ sel.specificity }%03d" % selectors.index(sel) }
-      selectors = selectors.reject {|sel| not @pseudo and sel.pseudo?}
+      selectors = selectors.reject {|sel| !@pseudo && sel.pseudo? }
       using_pseudo = selectors.any? &:pseudo?
       
       node['style'] = selectors.collect do |selector|
@@ -62,19 +66,12 @@ class InlineStyle
       end.join(' ').strip
     end
     
-    if html_already_parsed?
-      @dom
-    else
-      @dom.to_s
-    end
+    html_already_parsed? ? @dom : @dom.to_s
   end
 
+  private
   def dom
-    @dom ||= if html_already_parsed?
-      @html
-    else
-      Nokogiri.HTML @html
-    end
+    @dom ||= html_already_parsed? ? @html : Nokogiri.HTML(@html)
   end
 
   def html_already_parsed?
@@ -89,17 +86,8 @@ class InlineStyle
       next unless e['rel'] == 'stylesheet'
       e.remove
       
-      uri = if %r{^https?://} === e['href']
-        e['href']
-      else
-        File.join @stylesheets_path, e['href'].sub(/\?\d+$/,'')
-      end
+      uri = %r{^https?://} === e['href'] ? e['href'] : File.join(@stylesheets_path, e['href'].sub(/\?.+$/,'')) 
       open(uri).read rescue nil
     }.join("\n")
   end
 end
-
-require "#{ File.dirname( __FILE__ ) }/inline-style/selector"
-require "#{ File.dirname( __FILE__ ) }/inline-style/css_parsers"
-require "#{ File.dirname( __FILE__ ) }/inline-style/rack/middleware"
-require "#{ File.dirname( __FILE__ ) }/inline-style/mail/interceptor"
