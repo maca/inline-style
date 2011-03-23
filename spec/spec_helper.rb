@@ -3,14 +3,13 @@ require 'rspec'
 require 'rack'
 require 'rack/mock'
 
-$:.unshift File.join(File.dirname(__FILE__), '..')
 require "inline-style"
 require "inline-style/csspool_wrapper"
 require "csspool"
 
 FIXTURES = "#{File.dirname __FILE__}/fixtures"
 
-module HaveInlineStyleMatcher
+module InlineStyleMatchers
   class HaveInlineStyle
     def initialize selector
       @selector = selector
@@ -30,26 +29,6 @@ module HaveInlineStyleMatcher
     end
   end
 
-
-      # private
-      # To make testings work for both parsers we need to conform to
-      # csspool normalizing attributes. This means all numbers have a
-      # decimal place. It also means that urls do not have quotes.
-      #
-      # NOTE: This really doesn't have anything to do with the
-      # correctness of the parser. It just makes testing easier since
-      # each parser can run against the same tests.
-      # def normalize_for_test!(dec)
-      #     # Give all numbers a decimal if they do not already have it
-      #     dec.gsub! '0;', '0.0;'
-      #     dec.gsub! ' 0 ', ' 0.0 '
-      #     dec.gsub! /([^\.0-9]\d+)px/, '\1.0px'
-      #     dec.gsub! /([^\.0-9]\d+)%/, '\1.0%'
-
-      #     # Remove any quotes in url()
-      #     dec.gsub! "url('", 'url('
-      #     dec.gsub! "')", ')'
-      # end
   class MatchStyle
     def initialize style
       @style = style  
@@ -78,4 +57,4 @@ module HaveInlineStyleMatcher
   end
 end
 
-RSpec.configure { |config| config.include HaveInlineStyleMatcher }
+RSpec.configure { |config| config.include InlineStyleMatchers }

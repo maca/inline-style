@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    inline-style (0.4.8)
+    inline-style (0.4.9)
       css_parser
       maca-fork-csspool
       nokogiri

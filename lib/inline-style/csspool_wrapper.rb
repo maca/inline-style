@@ -1,6 +1,3 @@
-gem 'maca-fork-csspool'
-require 'csspool'
-
 class InlineStyle
   class CSSPoolWrapper
 

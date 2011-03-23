@@ -18,8 +18,10 @@ Useful for html email: some clients (gmail, et all) won't render non inline styl
 
 == Usage
 
-    require 'csspool' # this is optional if csspool is required inline-style will resort to it for css parsing, otherwise it will use the pure ruby css_parser
-                      # csspool should be faster because it uses librcroco written in C wich can also be an issue, use css_parser if you deploy to heroku
+    
+    gem 'maca-fork-csspool' # this is optional if csspool is required inline-style will resort to it for css parsing, otherwise it will use the pure ruby css_parser
+    require 'csspool'       # csspool should be faster because it uses librcroco written in C wich can also be an issue, use css_parser if you deploy to heroku
+                      
     require 'inline-style'
 
     html  = File.read("#{ dir }/index.html")
@@ -123,7 +125,7 @@ doesn't seems to.
 
 == Requirements:
 
-nokogiri && (css_parser || csspool)
+nokogiri && (css_parser || maca-fork-csspool)
 
 
 
