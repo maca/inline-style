@@ -1,16 +1,27 @@
-require "#{ File.dirname __FILE__ }/spec_helper"
+require "spec_helper"
+require "inline-style/mail/interceptor"
+require "mail"
 
-require 'mail'
 Mail.defaults do
   delivery_method :test
 end
-Mail.register_interceptor \
-  InlineStyle::Mail::Interceptor.new(:stylesheets_path => FIXTURES)
+
+Mail.register_interceptor InlineStyle::Mail::Interceptor.new(:stylesheets_path => FIXTURES)
 
 describe InlineStyle::Mail::Interceptor do
-
   before do
     Mail::TestMailer.deliveries.clear
+    class InlineStyle
+      remove_const :CSSParser
+      CSSParser = InlineStyle::CSSPoolWrapper 
+    end
+  end
+
+  after do
+    class InlineStyle
+      remove_const :CSSParser
+      CSSParser = InlineStyle::CssParserWrapper 
+    end
   end
 
   it 'should inline html e-mail' do
@@ -59,5 +70,4 @@ describe InlineStyle::Mail::Interceptor do
     Mail::TestMailer.deliveries.first.parts[1].body.to_s.
     should == File.read("#{ FIXTURES }/inline.html")
   end
-
 end

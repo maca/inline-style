@@ -1,7 +1,7 @@
-require "#{ File.dirname __FILE__ }/spec_helper"
+require "spec_helper"
+require "inline-style/rack/middleware"
 
 describe InlineStyle::Rack::Middleware do
-
   def get_response path, body, opts = {}
     content_type = opts.delete(:content_type) || 'text/html'
     app = Rack::Builder.new do
@@ -20,7 +20,7 @@ describe InlineStyle::Rack::Middleware do
   end
   
   it "should use external css" do
-    get_response('/', @html, :stylesheets_path => FIXTURES).css('#izq').first['style'].should =~ /margin: 30.0px/
+    get_response('/', @html, :stylesheets_path => FIXTURES).css('#izq').first['style'].should match_style /margin: 30.0px/
   end
   
   describe 'Path inclusion' do

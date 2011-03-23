@@ -1,8 +1,8 @@
 gem 'maca-fork-csspool'
 require 'csspool'
 
-module InlineStyle::CssParsers
-  class Csspool
+class InlineStyle
+  class CSSPoolWrapper
 
     def initialize(css_code)
       @parser = CSSPool.CSS css_code
@@ -27,8 +27,6 @@ module InlineStyle::CssParsers
             selector.specificity.inject(0) {|t, s| t+s})
         end
       end
-
     end
-
   end
 end

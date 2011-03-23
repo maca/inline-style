@@ -4,11 +4,19 @@ require 'open-uri'
 $:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require "inline-style/selector"
-require "inline-style/css_parsers"
-require "inline-style/rack/middleware"
+require "inline-style/rack/middleware" # This two may be should be required by user if she needs it
 require "inline-style/mail/interceptor"
 
 class InlineStyle
+  CSSParser =
+  if const_defined? :CSSPool
+    require 'inline-style/csspool_wrapper'
+    CSSPoolWrapper
+  else
+    require 'inline-style/css_parser_wrapper'
+    CssParserWrapper
+  end
+
   # @param [String, Nokogiri::HTML::Document] html Html or Nokogiri html to be inlined
   # @param [Hash] opts Processing options
   #
@@ -43,7 +51,7 @@ class InlineStyle
           path << "##{ node['id'] }" if node['id']
           path << ".#{ node['class'].scan(/\S+/).join('.') }" if node['class']
 
-          InlineStyle::CssParsers.parser.new("#{ path }{#{ node['style'] }}").each_rule_set do |rule|
+          CSSParser.new("#{path}{#{node['style']}}").each_rule_set do |rule|
             rule.each_selector do |selector_inner|
               nodes[node].push selector_inner
             end
@@ -59,7 +67,7 @@ class InlineStyle
       
       node['style'] = selectors.collect do |selector|
         if using_pseudo && !selector.pseudo?
-          "{#{ selector.inline_declarations }}"
+          "{#{selector.inline_declarations}}"
         else
           selector.inline_declarations
         end
@@ -80,7 +88,7 @@ class InlineStyle
 
   # Returns parsed CSS
   def css
-    @css ||= InlineStyle::CssParsers.parser.new dom.css('style, link').collect { |e|
+    @css ||= CSSParser.new dom.css('style, link').collect { |e|
       next unless e['media'].nil? || ['screen', 'all'].include?(e['media'])
       next(e.remove and e.content) if e.name == 'style'
       next unless e['rel'] == 'stylesheet'

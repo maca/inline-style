@@ -2,7 +2,8 @@
 
 http://github.com/maca/inline-style
 
-== DESCRIPTION:
+
+== Description
 
 Will take all css in a page (either from linked stylesheet or from style tag) and will embed it in the style attribute for 
 each refered element taking selector specificity and declarator order.
@@ -14,7 +15,11 @@ Useful for html email: some clients (gmail, et all) won't render non inline styl
   inline processing for both mail as well as ActionMailer.
 * It takes into account selector specificity.
 
-== USAGE
+
+== Usage
+
+    require 'csspool' # this is optional if csspool is required inline-style will resort to it for css parsing, otherwise it will use the pure ruby css_parser
+                      # csspool should be faster because it uses librcroco written in C wich can also be an issue, use css_parser if you deploy to heroku
     require 'inline-style'
 
     html  = File.read("#{ dir }/index.html")
@@ -83,8 +88,9 @@ Will become:
         <span style='font-family: "Lucida Grande", Lucida, Verdana, sans-serif;margin: 4.0px 3.0px 2.0px 1.0px;padding: 0.0;'>4</span>
       </li>
     </ul>
+
     
-== RACK MIDDLEWARE:
+== Rack Middleware:
 
     # Process all routes:
     use InlineStyle::Rack::Middleware
@@ -95,7 +101,8 @@ Will become:
     # Restrict processing to some routes:
     use InlineStyle::Rack::Middleware, :paths => [%r(/mails/.*), "/somepath"]
 
-== MAIL INTERCEPTOR
+
+== Mail Interceptor
 
 If using the mail library the following code will work:
 
@@ -106,21 +113,26 @@ If using ActionMailer (which wraps mail):
 
    ActionMailer::Base.register_interceptor \
      InlineStyle::Mail::Interceptor.new(:stylesheets_path => 'public')
+
     
-== ISSUES:
+== Issues:
 
 * It supports pseudo classes according to W3C specification for style in style attribute: http://www.w3.org/TR/css-style-attr, although browsers
 doesn't seems to.
 
-== REQUIREMENTS:
 
-tenderlove's nokogiri and csspool
+== Requirements:
 
-== INSTALL:
+nokogiri && (css_parser || csspool)
 
-    sudo gem install inline-style --source http://gemcutter.org
 
-== LICENSE:
+
+== Install:
+
+    sudo gem install inline-style
+
+
+== License:
 
 (The MIT License)
 

@@ -11,8 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{Inlines CSS for html email delivery}
   s.description = %q{Inlines CSS for html email delivery}
-
-  # s.rubyforge_project = "inline-style"
+  s.post_install_message = %{Please read documentation for changes on the default css parser gem, specifically if you use csspool}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
