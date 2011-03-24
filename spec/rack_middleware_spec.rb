@@ -1,5 +1,5 @@
 require "spec_helper"
-require "inline-style/rack/middleware"
+require "inline-style/rack-middleware"
 
 describe InlineStyle::Rack::Middleware do
   def get_response path, body, opts = {}

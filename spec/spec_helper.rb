@@ -5,6 +5,8 @@ require 'rack/mock'
 
 require "inline-style"
 require "inline-style/csspool_wrapper"
+
+gem 'maca-fork-csspool'
 require "csspool"
 
 FIXTURES = "#{File.dirname __FILE__}/fixtures"
@@ -40,11 +42,11 @@ module InlineStyleMatchers
     end
 
     def failure_message
-      "expected #{@style} to match #{@actual}"
+      "expected #{@actual} to match #{@style}"
     end
 
     def negative_failure_message
-      "expected #{@style} not to match #{@actual}"
+      "expected #{@actual} not to match #{@style}"
     end
   end
 

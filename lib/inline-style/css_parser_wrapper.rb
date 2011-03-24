@@ -2,26 +2,13 @@ require 'css_parser'
 
 class InlineStyle
   class CssParserWrapper
+    attr_accessor :rules
+
     def initialize(css_code)
-      @parser = ::CssParser::Parser.new
-      @parser.add_block! css_code
-    end
-
-    def each_rule_set(&blk)
-      @parser.each_rule_set do |rule_set|
-        yield Ruleset.new(rule_set)
-      end
-    end
-
-    class Ruleset
-      def initialize(ruleset)
-        @ruleset = ruleset
-      end
-
-      def each_selector
-        @ruleset.each_selector do |sel, dec, spe|
-          yield InlineStyle::Selector.new(sel, dec, spe)
-        end
+      parser, @rules = CssParser::Parser.new, []
+      parser.add_block! css_code
+      parser.each_rule_set do |rule_set| 
+        rule_set.each_selector { |sel, dec, spec| @rules << Rule.new(sel, dec, '%04d' % spec.to_i) } 
       end
     end
   end

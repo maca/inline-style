@@ -3,7 +3,7 @@ require "spec_helper"
 describe InlineStyle do
   shared_examples_for 'inlines styles' do
     before do
-      processed  = InlineStyle.process File.read("#{FIXTURES}/boletin.html"), :pseudo => false, :stylesheets_path => FIXTURES
+      processed  = InlineStyle.process File.read("#{FIXTURES}/boletin.html"), :stylesheets_path => FIXTURES
       @processed = Nokogiri.HTML(processed)
     end
 
@@ -16,7 +16,7 @@ describe InlineStyle do
     end
 
     it "should extract styles from linked stylesheet with media 'all'" do
-      @processed.css('#izq').first['style'].should match_style /padding: 10.0px;/
+      @processed.css('#izq').first['style'].should match_style /border: none;/
     end
 
     it "should ignore styles from linked stylesheet with media other than screen" do
@@ -27,11 +27,6 @@ describe InlineStyle do
       @processed.css('a').first['style'].should_not match_style /^:hover \{background-color: #8ae0ea; color: #126b5d;\}$/
     end
 
-    it "should should process pseudo classes" do
-      processed = InlineStyle.process Nokogiri.HTML(File.read("#{FIXTURES}/boletin.html")), :pseudo => true
-      processed.css('a').first['style'].should match_style /^:hover \{background-color: #8ae0ea; color: #126b5d;\}$/
-    end
-
     it 'should process location-based pseudo classes' do
       @processed.at_css('#izq')['style'].should match_style /padding: 1.0px;/
     end
@@ -40,9 +35,13 @@ describe InlineStyle do
       @processed.css('#logos #der').first['style'].should match_style /float: right;/
     end
 
-    # it 'should overwrite rule with less specificity'
-    # it 'should overwrite rule previously defined'
-    # it 'should not overwrite rules defined inline'
+    it 'should not override rules defined inline' do
+      @processed.css('#aviso').first['style'].should match_style /color: green;/
+    end
+
+    it 'should overwrite rule previously defined' do
+      @processed.css('#izq').first['style'].should_not match_style /padding: 0.0;/
+    end
 
     describe 'Box model' do
       before do

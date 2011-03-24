@@ -24,8 +24,8 @@ Useful for html email: some clients (gmail, et all) won't render non inline styl
                       
     require 'inline-style'
 
-    html  = File.read("#{ dir }/index.html")
-    puts InlineStyle.process(html, :stylesheets_paths => "#{ dir }/styles")
+    html  = File.read("./index.html")
+    puts InlineStyle.process(html, :stylesheets_paths => "./styles")
         
 index.html contains:
     
@@ -115,18 +115,11 @@ If using ActionMailer (which wraps mail):
 
    ActionMailer::Base.register_interceptor \
      InlineStyle::Mail::Interceptor.new(:stylesheets_path => 'public')
-
     
-== Issues:
-
-* It supports pseudo classes according to W3C specification for style in style attribute: http://www.w3.org/TR/css-style-attr, although browsers
-doesn't seems to.
-
 
 == Requirements:
 
 nokogiri && (css_parser || maca-fork-csspool)
-
 
 
 == Install:

@@ -9,6 +9,7 @@
 #
 #   ActionMailer::Base.register_interceptor \
 #     InlineStyle::Mail::Interceptor.new(:stylesheets_path => 'public')
+#
 module InlineStyle::Mail
   class Interceptor
     # The mime types we should inline. Basically HTML and XHTML.
