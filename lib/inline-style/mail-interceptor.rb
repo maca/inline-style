@@ -27,7 +27,7 @@ module InlineStyle::Mail
         for part in part.parts
           delivering_email part
         end
-      elsif INLINE_MIME_TYPES.any? {|m| part.content_type.starts_with? m}
+      elsif INLINE_MIME_TYPES.any? {|m| part.content_type.start_with? m}
         part.body = InlineStyle.process(part.body.to_s, @options)
         part.content_transfer_encoding = nil
       end
