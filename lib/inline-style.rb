@@ -1,8 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-
-$:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
-
 require "inline-style/rule"
 require "inline-style/rack-middleware" # This two may be should be required by user if she needs it
 require "inline-style/mail-interceptor"
