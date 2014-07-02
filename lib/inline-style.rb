@@ -28,8 +28,10 @@ class InlineStyle
 
   def initialize html, opts = {}
     @stylesheets_path = opts[:stylesheets_path] || ENV['DOCUMENT_ROOT'] || '.'
-    @html           = html
-    @dom = String === html ? Nokogiri.HTML(html) : html
+    @ignore           = opts[:ignore] || false
+    @only             = opts[:only] || false
+    @html             = html
+    @dom              = String === html ? Nokogiri.HTML(html) : html
   end
 
   def process
@@ -79,8 +81,12 @@ class InlineStyle
 
   # Returns parsed CSS
   def extract_css
-    @dom.css('style, link[rel=stylesheet]').collect do |node|
+    css_search = @only ? @only : 'style, link[rel=stylesheet]'
+    @dom.css(css_search).collect do |node|
+
+      next if @ignore and node.parent.css(@ignore).include? node
       next unless /^$|screen|all/ === node['media'].to_s
+
       node.remove
 
       if node.name == 'style'
@@ -89,6 +95,7 @@ class InlineStyle
         uri = %r{^https?://} === node['href'] ? node['href'] : File.join(@stylesheets_path, node['href'].sub(/\?.+$/,'')) 
         open(uri).read
       end
+      
     end.join("\n")
   end
 
