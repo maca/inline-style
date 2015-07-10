@@ -87,7 +87,11 @@ class InlineStyle
         node.content 
       else
         uri = %r{^https?://} === node['href'] ? node['href'] : File.join(@stylesheets_path, node['href'].sub(/\?.+$/,'')) 
-        open(uri).read
+        begin
+          open(uri).read
+        rescue SocketError, OpenURI::HTTPError
+          ''
+        end
       end
     end.join("\n")
   end
