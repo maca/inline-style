@@ -98,6 +98,20 @@ describe 'CSS parsing' do
         end
       end
     end
+
+    describe 'multiple dynamic pseudo selector' do
+      before do
+        @wrapper = subject.new 'a:visited:hover {background-color: black; padding: 0.0 0.0 0.0 0.0}'
+      end
+
+      it { @wrapper.should have(1).rules }
+
+      describe 'rule' do
+        before { @rule = @wrapper.rules.first }
+        it { @rule.selector.should == 'a' }
+        it { @rule.dynamic_pseudo_class.should == 'visited:hover' }
+      end
+    end
   end
 
   shared_examples_for 'parses dynamic pseudo selector' do

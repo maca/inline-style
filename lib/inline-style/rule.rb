@@ -10,8 +10,15 @@ class InlineStyle
 
     def initialize selector, declarations, specificity
       @specificity = specificity
+
       @selector, @dynamic_pseudo_class = selector.split DYNAMIC_PSEUDO_CLASSES_MATCHER
+      while @selector =~ /:(#{DYNAMIC_PSEUDO_CLASSES.join('|')})/ do
+        parts = @selector.split DYNAMIC_PSEUDO_CLASSES_MATCHER
+        @selector = parts.first
+        @dynamic_pseudo_class.prepend "#{parts.last}:"
+      end
       @selector.sub! /$^/, '*'
+
       @declarations = declarations.scan /\s*([^:]+):\s*([^;]+);/
     end
   end
